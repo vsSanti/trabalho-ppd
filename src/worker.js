@@ -2,7 +2,7 @@ const { parentPort } = require('worker_threads');
 const crypto = require('crypto');
 
 parentPort.once('message', (message) => {
-  console.log(`Recebeu mensagem: ${message}.`);
+  console.log(`Recebeu mensagem: ${message}`);
   const payload = message;
   let nonce = 0;
   let generatedHash = '';

@@ -1,10 +1,36 @@
 const { createWorkers } = require('./createWorkers');
 
-// deve receber como entrada de um socket
-const payloads = require('./data/payloads.json');
+const express = require('express');
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
-// callback deve enviar de volta os dados processados pra quem chamou o socket
-const callback = (data) => console.log(data);
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
 
-// chama quando recebe uma mensagem do socket
-createWorkers({ payloads, callback });
+io.on('connection', (socket) => {
+  console.log('Terminal conectado');
+
+  socket.on('disconnect', () => {
+    console.log('Terminal desconectado');
+  });
+
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);
+    io.emit('chat message', msg);
+    const payloads = String(msg).split(',');
+
+    const callback = (data) => {
+      // io.emit('response', data);
+    };
+
+    createWorkers({ payloads, callback });
+  });
+});
+
+server.listen(3000, () => {
+  console.log('Servidor inicializado na porta *:3000');
+});
