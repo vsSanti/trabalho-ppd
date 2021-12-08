@@ -11,6 +11,8 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+const mapOfHashes = {};
+
 io.on('connection', (socket) => {
   console.log('Terminal conectado');
 
@@ -20,10 +22,23 @@ io.on('connection', (socket) => {
 
   socket.on('chat message', (msg) => {
     console.log('message: ' + msg);
+    const hasUnresolvedHash = Object.keys(mapOfHashes).some((hash) => mapOfHashes[hash] === false);
+
+    if (hasUnresolvedHash) {
+      io.emit('chat message', 'Há processamento pendente no sistema!');
+      return;
+    }
+
     io.emit('chat message', msg);
+
     const payloads = String(msg).split(',');
 
+    payloads.map((p) => {
+      mapOfHashes[p] = false;
+    });
+
     const callback = (data) => {
+      mapOfHashes[data.payload] = true;
       io.emit('response', { ...data, sender: socket.id });
     };
 
