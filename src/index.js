@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
     const payloads = String(msg).split(',');
 
     const callback = (data) => {
-      io.emit('response', data);
+      io.emit('response', { ...data, sender: socket.id });
     };
 
     createWorkers({ payloads, callback });

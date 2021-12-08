@@ -1,5 +1,6 @@
 - [x] Fazer o cálculo de hash em thread separada;
 - [x] Iniciar threads baseado em conexão com socket;
 - [x] Botão para gerar dados aleatórios no front;
-- [ ] Mostrar o IP de quem enviou a mensagem no front;
+- [x] Mostrar o identificador de quem enviou a mensagem no front;
+- [ ] Estilizar a mensagem de retorno da API;
 - [ ] Exibir o tempo de processamento;

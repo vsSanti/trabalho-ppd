@@ -73,6 +73,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io();
+    var socketId = '';
 
     var form = document.getElementById('form');
     var input = document.getElementById('input');
@@ -102,6 +103,10 @@
         socket.emit('chat message', input.value);
         input.value = '';
       }
+    });
+
+    socket.on('connect', function () {
+      socketId = socket.id;
     });
 
     socket.on('chat message', function (msg) {
