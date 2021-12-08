@@ -64,7 +64,10 @@
 <body>
   <ul id="messages"></ul>
   <form id="form" action="">
-    <input id="input" autocomplete="off" /><button>Send</button>
+    <input id="input" autocomplete="off" />
+    
+    <button type="button" id="random-data-btn">Generate Random</button>
+    <button>Send</button>
   </form>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -73,6 +76,25 @@
 
     var form = document.getElementById('form');
     var input = document.getElementById('input');
+    var randomDataBtn = document.getElementById('random-data-btn');
+
+    function makeid() {
+      var result = '';
+      var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var charactersLength = characters.length;
+      for (var i = 0; i < 50; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+    }
+
+    randomDataBtn.addEventListener('click', function (e) {
+      const arrayOfHashes = [];
+      for (let i = 0; i < 10; i++) {
+        arrayOfHashes.push(makeid());        
+      }
+      input.value = arrayOfHashes.join(',');
+    });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
