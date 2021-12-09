@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
     });
 
     const callback = (data) => {
+      console.log(`Enviando o resultado da mensagem: ${data.payload}`);
       mapOfHashes[data.payload] = true;
       io.emit('response', { ...data, sender: socket.id });
     };
